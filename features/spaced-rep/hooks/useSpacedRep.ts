@@ -26,24 +26,26 @@ export function useSpacedRep() {
 
   // Load data dari AsyncStorage
   useEffect(() => {
-  async function load() {
-    try {
-      const data = await AsyncStorage.getItem(STORAGE_KEY)
-      if (data) {
-        const parsed: DrillCard[] = JSON.parse(data)
-        setCards(parsed)
-      } else {
-        // Isi dengan data dummy drill kalau belum ada
+    async function load() {
+      try {
+        const data = await AsyncStorage.getItem(STORAGE_KEY)
+        if (data) {
+          const parsed: DrillCard[] = JSON.parse(data)
+          console.log('Loaded drill cards:', data ? JSON.parse(data) : dummyDrills)
+          setCards(parsed)
+        } else {
+          // Isi dengan data dummy drill kalau belum ada
+          console.log('Loaded drill cards:', data ? JSON.parse(data) : dummyDrills)
+          setCards(dummyDrills)
+        }
+      } catch (error) {
+        console.warn(error)
         setCards(dummyDrills)
+      } finally {
+        setLoading(false)
       }
-    } catch (error) {
-      console.warn(error)
-      setCards(dummyDrills)
-    } finally {
-      setLoading(false)
     }
-  }
-  load()
+    load()
 }, [])
 
   // Simpan data ke AsyncStorage kalau cards berubah
