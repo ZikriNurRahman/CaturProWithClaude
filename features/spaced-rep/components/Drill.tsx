@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { useSpacedRep, DrillCard } from '../hooks/useSpacedRep'
+import { useSpacedRep } from '../hooks/useSpacedRep'
 
 export function Drill() {
   const { dueCards, updateCard, loading } = useSpacedRep()

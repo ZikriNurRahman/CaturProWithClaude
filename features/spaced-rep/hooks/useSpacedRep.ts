@@ -4,7 +4,7 @@ import { calculateNextReview, Quality, SRSData } from '../algorithm'
 import { dummyDrills } from '../data/dummyDrills'
 
 export interface DrillCard {
-  id: string      // id unik puzzle/latihan
+  id: string   
   question: string
   answer: string
   srs: SRSData
@@ -12,13 +12,6 @@ export interface DrillCard {
 }
 
 const STORAGE_KEY = 'caturpro_spaced_rep'
-
-// Initial default SRS data
-const defaultSRS: SRSData = {
-  easeFactor: 2.5,
-  interval: 1,
-  repetitions: 0,
-}
 
 export function useSpacedRep() {
   const [cards, setCards] = useState<DrillCard[]>([])
@@ -31,15 +24,12 @@ export function useSpacedRep() {
         const data = await AsyncStorage.getItem(STORAGE_KEY)
         if (data) {
           const parsed: DrillCard[] = JSON.parse(data)
-          console.log('Loaded drill cards:', data ? JSON.parse(data) : dummyDrills)
           setCards(parsed)
         } else {
           // Isi dengan data dummy drill kalau belum ada
-          console.log('Loaded drill cards:', data ? JSON.parse(data) : dummyDrills)
           setCards(dummyDrills)
         }
-      } catch (error) {
-        console.warn(error)
+      } catch {
         setCards(dummyDrills)
       } finally {
         setLoading(false)
@@ -51,7 +41,7 @@ export function useSpacedRep() {
   // Simpan data ke AsyncStorage kalau cards berubah
   useEffect(() => {
     if (!loading) {
-      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(cards)).catch(console.warn)
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(cards))
     }
   }, [cards, loading])
 
